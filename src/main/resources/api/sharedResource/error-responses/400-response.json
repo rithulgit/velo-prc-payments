@@ -1,0 +1,12 @@
+{
+	"data": [],
+	"result": {
+		"success": false,
+		"code": "400",
+		"message": {
+			"errorMessage": "Bad request",
+			"errorDescription": "Credit card information is invalid",
+			"errorType": "HTTP:BAD_REQUEST"
+		}
+	}
+}

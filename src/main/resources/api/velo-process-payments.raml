@@ -1,0 +1,35 @@
+#%RAML 1.0 
+baseUri: https://mocksvc.mulesoft.com/mocks/3ec27c15-cc1d-4b99-b8d8-4d4ed8e6e724 # 
+title: VELO Account API
+version: 1.0
+
+uses: 
+  veloCommon: sharedResource/velo-common-resources.raml
+
+/process:
+  /payments:
+    /v1:
+      /{login-id}:
+       /transfer:
+        type: veloCommon.veloResourcepost
+        displayName: Transfer Funds           
+        post:
+          description: Transfer Funds fom one account to antoher account by using the Account Numbers
+          queryParameters: 
+            transferType:
+              description: Account Transfer Type
+              required: true
+              type: string
+              enum:
+                - m2m
+                - m2u
+          body:
+            application/json:
+                example: !include request/Account-TransferFunds-Request.json
+               
+          responses: 
+            200:
+             body:
+                application/json:
+                  example: !include response/Account-TransferFunds-Response.json
+      

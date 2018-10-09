@@ -1,0 +1,12 @@
+{
+	"data": [],
+	"result": {
+		"success": false,
+		"code": "500",
+		"message": {
+			"errorMessage": "Internal server error",
+			"errorDescription": "No data found for resource with id",
+			"errorType": "HTTP:INTERNAL_SEVER_ERROR"
+		}
+	}
+}

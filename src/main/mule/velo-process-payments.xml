@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+    <apikit:config name="velo-process-payments-config" raml="velo-process-payments.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <flow name="velo-process-payments-main">
+        <http:listener path="/api/*" config-ref="velo-process-account-api-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+            </http:error-response>
+        </http:listener>
+        <json-logger:logger doc:name="Begin process api (INFO)" doc:id="9652f54e-0f34-411f-b4da-45d52de84a0f" config-ref="JSON_Logger_Config" message="Begin process api">
+			<json-logger:content><![CDATA[#[output application/json ---
+{
+ 	attributes: attributes,
+	URL: attributes.requestPath
+}]]]></json-logger:content>
+		</json-logger:logger>
+		<set-variable value="#[attributes.requestPath]" doc:name="requestPath" doc:id="b2ac5fe2-f500-4ab4-a9af-c3b810275bfc" variableName="requestPath" />
+        <logger level="DEBUG" doc:name="Incoming Request to the API (DEBUG)" doc:id="f3cf2062-4e7c-4aba-8ddb-f1f013d5871d" message="Incoming Request :: #[payload] "/>
+        <apikit:router config-ref="velo-process-payments-config" />
+		<logger level="DEBUG" doc:name="Response from the API (DEBUG)" doc:id="7390b21b-880c-4085-8294-1fb7edb89ef6" message="Process Response :: #[payload]"/>
+		<json-logger:logger doc:name="End process api (INFO)" doc:id="a0a7db4d-185c-4fe3-b4e8-f24e7523f5e5" message="End process api" tracePoint="END" config-ref="JSON_Logger_Config">
+			<json-logger:content ><![CDATA[#[output application/json ---
+{
+ 	URL: vars.requestPath
+}]]]></json-logger:content>
+		</json-logger:logger>
+    </flow>
+    <flow name="velo-process-payments-console">
+        <http:listener path="/console/*" config-ref="velo-process-account-api-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="velo-process-payments-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="post:\process\payments\v1\(login-id)\transfer:velo-process-payments-config">
+        <flow-ref doc:name="account-transferfundsFlow" doc:id="ba0166ce-782d-48eb-9594-c649a6edfa2d" name="account-transferfundsFlow"/>
+    </flow>
+</mule>

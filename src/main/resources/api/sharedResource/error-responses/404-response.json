@@ -1,0 +1,12 @@
+{
+	"data": [],
+	"result": {
+		"success": false,
+		"code": "404",
+		"message": {
+			"errorMessage": "<<resourcePathName>> not found",
+			"errorDescription": "No data found for resource with id",
+			"errorType": "HTTP:BAD_REQUEST"
+		}
+	}
+}

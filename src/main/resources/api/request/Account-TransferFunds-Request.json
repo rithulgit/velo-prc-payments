@@ -1,0 +1,13 @@
+{
+  "ToAccountNumber": 178596275,
+  "ToAccountType": "DP",
+  "FromAccountNumber": 178349435,
+  "FromAccountType": "DP",
+  "Amount": 6,
+  "DebitTransactionCode": "215",
+  "CreditTransactionCode": "115",
+  "FromTransactionCustomDescription1": "Test Desc 1",
+  "FromTransactionCustomDescription2": "Test Desc 2",
+  "ToTransactionCustomDescription1": "",
+  "ToTransactionCustomDescription2": ""
+}

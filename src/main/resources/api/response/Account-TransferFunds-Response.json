@@ -1,0 +1,23 @@
+{
+	"data": {
+		"FromTransactionDescription1": "Ref 2130207P",
+		"FromTransactionDescription2": "Funds transfer to",
+		"FromTransactionDescription3": "Dep 178702556",
+		"FromTransactionDescription4": "from",
+		"FromTransactionDescription5": null,
+		"FromTransactionDescription6": null,
+		"ToTransactionDescription1": "Ref 2130207P",
+		"ToTransactionDescription2": "Funds transfer frm",
+		"ToTransactionDescription3": "Dep 178349435",
+		"ToTransactionDescription4": "from",
+		"ToTransactionDescription5": null,
+		"ToTransactionDescription6": null,
+		"ConfirmationNumber": "2130207P",
+		"ErrorMessageList": null
+	},
+	"result": {
+		"success": true,
+		"code": "200",
+		"message": null
+	}
+}

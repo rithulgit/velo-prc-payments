@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd 
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+   
+    <http:request-config name="HTTP_Request_AccountList" doc:name="HTTP Request configuration" doc:id="4950a2d0-f1c8-48c8-992f-fdcc1489cd9e" responseTimeout="${system.responseTimeoutSecs}">
+        <http:request-connection host="${accountlistflow.host}" protocol="HTTPS" tlsContext="TLS_Context">
+        </http:request-connection>
+    </http:request-config>
+    
+   	<http:request-config name="HTTP_Request_configuration_Okta_System"
+		doc:name="HTTP Request configuration" doc:id="0b5ac0e6-942c-4ce8-8e57-cb95e2e4641f" responseTimeout="${system.responseTimeoutSecs}">
+		<http:request-connection host="${okta.host}" protocol="HTTPS" tlsContext="TLS_Context"/>
+	</http:request-config>
+    
+    <http:request-config name="HTTP_Request_Transferfunds" doc:name="HTTP Request configuration" doc:id="c55ecfab-9c88-4019-bc85-7a0d3d441d17" responseTimeout="${system.responseTimeoutSecs}">
+		<http:request-connection host="${accounttransactions.host}" protocol="HTTPS" tlsContext="TLS_Context"/>
+	</http:request-config>
+    <http:listener-config name="velo-process-account-api-httpListenerConfig" doc:name="HTTP Listener config">
+        <http:listener-connection host="0.0.0.0" port="${http.listener.port}"/>
+    </http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="61b18ad1-21d1-477f-92f9-28f5c5deed38" file="env-${env}.yaml" />
+	<tls:context name="TLS_Context" doc:name="TLS Context" doc:id="a9e078e6-8b8c-4482-8e3c-3459c161778e" >
+		<tls:trust-store insecure="true"/>
+	</tls:context>
+	<http:request-config name="HTTP_Request_GetEStatement" doc:name="HTTP Request configuration" doc:id="6574049c-f8fc-45c8-a54a-9a790e447ceb" responseTimeout="${system.responseTimeoutSecs}">
+		<http:request-connection protocol="HTTPS" host="${statements.host}" tlsContext="TLS_Context">
+		</http:request-connection>
+	</http:request-config>
+	<http:request-config name="HTTP_Request_SearchEStatement" doc:name="HTTP Request configuration" doc:id="7c86f328-dd5a-4752-98e6-d3aec6d2fbee" responseTimeout="${system.responseTimeoutSecs}">
+		<http:request-connection protocol="HTTPS" host="${statements.host}" tlsContext="TLS_Context"/>
+	</http:request-config>
+	<http:request-config name="HTTP_Request_CheckImage" doc:name="HTTP Request configuration" doc:id="db2ff56a-697a-4f1a-83dd-fb5dde577cfa" responseTimeout="${system.responseTimeoutSecs}">
+		<http:request-connection protocol="HTTPS" host="${accounttransactions.host}" tlsContext="TLS_Context">
+		</http:request-connection>
+	</http:request-config>
+	<http:request-config name="HTTP_Request_Accounttrasactions" doc:name="HTTP Request configuration" doc:id="9ae3fdc4-6d0c-4909-a829-688722e1c2a1" responseTimeout="${system.responseTimeoutSecs}">
+		<http:request-connection host="${accounttransactions.host}" tlsContext="TLS_Context" protocol="HTTPS">
+		</http:request-connection>
+	</http:request-config>
+	<http:request-config name="HTTP_Request_Enrollstatement" doc:name="HTTP Request configuration" doc:id="70b670b4-c591-423b-9d3a-2be930131ba5" responseTimeout="${system.responseTimeoutSecs}">
+		<http:request-connection protocol="HTTPS" host="${statements.host}" tlsContext="TLS_Context" >
+		</http:request-connection>
+	</http:request-config>
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="1cb88e6b-d228-4d9d-8f88-e7122e57332b" >
+		<email:smtps-connection host="${smtp.host}" port="${smtp.port}" user="${smtp.user}" password="${smtp.pass}">
+			<tls:context >
+				<tls:trust-store insecure="true" />
+			</tls:context>
+		</email:smtps-connection>
+	</email:smtp-config>
+ 	
+ 	<!-- <api-gateway:autodiscovery apiId="${api.id}" doc:name="API Autodiscovery" doc:id="0e2b611f-34e6-4a01-a015-59f3572f696b" flowRef="velo-process-payments-main"/>
+	 --><import doc:name="Import" doc:id="82c217a2-05c1-4163-b69c-2453184847e5" file="velo-common-fraud-checkfraud.xml" />
+	<import doc:name="Import" doc:id="ee1d9098-b678-4195-8f74-803f87575f27" file="velo-global-error-handler.xml" />
+</mule>

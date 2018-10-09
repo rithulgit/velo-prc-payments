@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="pinpointRequest" format="json">
+      <types:example format="json" location="examples/PinPointRequest.json"/>
+    </types:type>
+    <types:type name="CustomerInfo" format="json">
+      <types:example format="json" location="examples/CustomerInfo.json"/>
+    </types:type>
+    <types:type name="pinpointResponse" format="json">
+      <types:example format="json" location="examples/PinPointResponse.json"/>
+    </types:type>
+    <types:type name="transactionRequest" format="json">
+      <types:example format="json" location="examples/transactionRequest.json"/>
+    </types:type>
+    <types:type name="CRM-Fraud-Request" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="enroll" format="json">
+      <types:example format="json" location="api/request/Statement-enrollment-request.json"/>
+    </types:type>
+    <types:type name="CustomersByAccount" format="json">
+      <types:example format="json" location="examples/customerListByAccount-1.json"/>
+    </types:type>
+    <types:type name="systemTransferRequest" format="json">
+      <types:example format="json" location="examples/systemTransterRequest-1.json"/>
+    </types:type>
+    <types:type name="crm-response" format="json">
+      <types:example format="json" location="examples/crm-response-1.json"/>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#1d8ea739-a9b9-4d23-abb2-c67da46c5bed">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="pinpointResponse" type="pinpointResponse[]"/>
+          <types:variable name="transactionRequest" type="transactionRequest"/>
+          <types:variable name="CustomerInfo" type="CustomerInfo"/>
+          <types:variable name="pinpointRequest" type="pinpointRequest[]"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#11928e48-d315-4831-940f-d94eae9cf1ea">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="CRM-Fraud-Request"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#affa6510-d50f-4a96-9d07-eba5104d0b88">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="enroll"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="enroll"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#040fd6be-58f5-4a8e-979c-3f146322fdf2">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="TransactionRequest" type="transactionRequest"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#4658893f-2551-43db-a625-7fc6a47a5e5e">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="TransactionRequest" type="transactionRequest"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d77173a2-8ba0-401d-9088-f5e555a73255">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="CustomersForAccount" type="CustomersByAccount"/>
+          <types:variable name="TransactionRequest" type="transactionRequest"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#0cab3850-8560-436e-969a-11024c2c772c">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="transactionRequest" type="transactionRequest"/>
+        </types:variables>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="systemTransferRequest"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#9c0746f7-db0a-4efa-8473-3dc3867a83dd">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="crm-response" type="crm-response"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

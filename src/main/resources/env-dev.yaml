@@ -1,0 +1,105 @@
+http:
+  listener:
+    port: "8091"
+ 
+customerVerificationFlow:
+  host: "velo-customer-verification-system-api-uat.us-w2.cloudhub.io"
+  endpoints:
+    activatecard: "api/system/debitcard/{cardnumber}/status"
+    changepin: "api/system/debitcard/{cardnumber}/changepin"
+    
+debitcardDetails:
+  host: "velo-debitcard-system-api-uat.us-w2.cloudhub.io"
+  endpoints:  
+    carddetails: "api/debitcards/{cardnumber}"
+    
+accountlistflow:
+  DepositCategory: D,N,M,S,T,C,R,L
+  ProductCode: 2,3,4,6,8,9,10,11,12,15,17,25,35,37,40,41,45,49,60,61,62,66,67,206,240,241,902,905,907,913,920,938,940,970
+  viewableAccounts: 75,31,84,213,140,54,58,991,210,951,217,959,204,59,992,37,61,209,76,60,90,207,203,961,33,117,115,221,83,121,122,49,34,100,222,120,206,38,35,201,107,202,23,22,194,46,205,81,92,214,108,109,110,45,955,27,93,200,225,82,91,223,220,63,99,224,40,226,211,0,155,127,80,956,101,36,39,41,48
+  validTransferFromAccounts: 0,22,201,202 
+  validTransferToAccounts: 0,22,23,201,202
+  StatusCodeSendFrom: 0,1,2,3,4,5,6,7,8,9,E,I,J,K,R,S,U,V,W,X,Z
+  StatusCodeSendTo: 0,1,2,3,5,6,7,8,9,E,I,J,K,M,R,S,U,V,W,X,Z
+  AccountOpenStatus: Z
+  TransactionPostingIndicatorSendFrom: A
+  TransactionPostingIndicatorSendTo: Y,A
+  DormantIndicator: N
+  SpecialIndicator: G,F
+  AccountType: Checking,Savings
+  host: "devopenapi.velobank.com"
+  endpoints:
+    accountlists: "api/system/customers/{customernumber}/accounts"
+
+accounttransactions:
+  host: "devopenapi.velobank.com"
+  endpoints:
+    transactions: "api/system/account/{accountnumber}/transactions"
+    accountholders: "api/system/account/{accountnumber}/accountholders"
+    m2mtransferfunds:  "api/system/accounttransfer/m2m/transferfunds"
+    checkaccount: "api/system/check/{checknumber}/image"
+
+accountpreferences:
+  AccountType: Checking,Savings,CD    
+
+accounttransferfunds:
+  accountrejectedstatus: L,Q,S,E,H,T,D
+  toAccountRejectStatus: "4"
+  fromAccountRejectStatus: M,Y
+  fromToRelCodeMap:
+    "0": 0,201,22,23,202
+    "22": 0,201,22,23,202
+    "201": 0,201,22,23,202
+    "202": 0,201,22,23,202
+  jointCustomers:
+    "0": 43,48,49
+    "22": 43,48,49,22
+    "201": 43,48,49,51,164
+    "202": 43,48,49,51,164,202
+   
+statements:
+  host: "devopenapi.velobank.com"
+  endpoints:
+    searchestatement: "api/system/statement/search"
+    getestatement: "api/system/statement/document/{documentid}/pdf"   
+    enrollstatement: "api/system/statement/user/{cisnumber}/accounts"
+    createuser: "api/system/statement/user/{cisnumber}"
+    createaccountentity: "api/system/statement/account/{accountnumber}"
+    getenrollment: "api/system/statement/user/{cisnumber}/accounts"
+
+pinpoint:
+  host: "devopenapi.velobank.com"
+  trust:
+    path: "api/system/pinpoint/trust"
+
+okta:
+  host: "devopenapi.velobank.com"
+  endpoints:
+    user: "api/system/iam/users"
+    login: "api/system/iam/users/login"
+
+msd:
+  host: "devopenapi.velobank.com"
+  case:
+    path: "api/system/crm/case"
+
+smtp:
+  host: "email-smtp.us-west-2.amazonaws.com"
+  port: "465"
+  user: "AKIAIPDF6ZMKJQ4KD6LA"
+  pass: "AoiD4TqxRdPW2HjUVvITEougPxfn1AZJMJX803mxZbdO"
+  from: "talk2us@velobank.com"
+  deny-transaction:
+    subject: "Your funds transfer has been declined"
+
+api:
+  id: "15484763"
+  
+system:
+  responseTimeoutSecs: "35000"
+  
+json:
+  logger:
+    application:
+      name: "velo-process-account-api"
+      version: "1.0"

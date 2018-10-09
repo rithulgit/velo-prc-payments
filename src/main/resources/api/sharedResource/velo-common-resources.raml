@@ -1,0 +1,93 @@
+#%RAML 1.0 Library
+  
+ resourceTypes: 
+  veloResourceget:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+        400:
+          body:
+            application/json:
+              example: !include error-responses/400-response.json
+        404:
+          body:
+            application/json:
+              example: !include error-responses/404-response.json
+        500:
+          body:
+            application/json:
+              example: !include error-responses/500-response.json
+
+  veloResourcepost:
+    post:
+      responses:
+        200:
+          body:
+            application/json:
+        400:
+          body:
+            application/json:
+              example: !include error-responses/400-response.json
+        404:
+          body:
+            application/json:
+              example: !include error-responses/404-response.json
+        500:
+          body:
+            application/json:
+              example: !include error-responses/500-response.json
+
+  veloResourceCollection:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+        400:
+          body:
+            application/json:
+              example: !include error-responses/400-response.json
+        404:
+          body:
+            application/json:
+              example: !include error-responses/404-response.json
+        500:
+          body:
+            application/json:
+              example: !include error-responses/500-response.json
+    post:
+      responses:
+        200:
+          body:
+            application/json:
+        400:
+          body:
+            application/json:
+              example: !include error-responses/400-response.json
+        404:
+          body:
+            application/json:
+              example: !include error-responses/404-response.json
+        500:
+          body:
+            application/json:
+              example: !include error-responses/500-response.json
+    put:   
+      responses:
+        200:
+          body:
+            application/json:
+        400:
+          body:
+            application/json:
+              example: !include error-responses/400-response.json
+        404:
+          body:
+            application/json:
+              example: !include error-responses/404-response.json
+        500:
+          body:
+            application/json:
+              example: !include error-responses/500-response.json
